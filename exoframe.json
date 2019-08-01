@@ -1,0 +1,9 @@
+{
+  "name": "server",
+  "restart": "on-failure:2",
+  "domain": "server.zeiw.me",
+  "project": "ZEIW",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
