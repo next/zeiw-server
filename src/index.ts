@@ -1,3 +1,5 @@
+export {}
+
 const uuid = require('uuid')
 const express = require('express')
 const app = require('express')()
@@ -95,21 +97,33 @@ io.on('connection', function(socket) {
 })
 
 function findOpenGame(user, socket) {
-  let g = false
+  const g: Game | null = null
   const gms = Object.keys(games)
   for (let i = 0; i < gms.length; i++) {
     const id = gms[i]
     if (games[id].isFull() === false && games[id].status === 'matchmaking') {
-      g = games[id]
+      let g = games[id]
       break
     }
   }
-  if (g === false) {
+  if (g === null) {
+    let g: any
     g = new Game()
   }
   g.addPlayer(user, socket)
 }
 class Game {
+  public id: any
+  public p1: any
+  public p2: any
+  public ball: any
+  public status: any
+  public hosted: any
+  public secs: any
+  public interval: any
+  public secint: any
+  public code: any
+
   constructor() {
     this.id = uuid()
     this.p1 = new Paddle(this.id, 30, h / 2, 10, 100, 'p1')
@@ -207,6 +221,11 @@ class Game {
   }
 }
 class User {
+  public id: any
+  public game: any
+  public wins: any
+  public losses: any
+
   constructor(id) {
     this.id = id
     this.game = null
@@ -216,6 +235,16 @@ class User {
   }
 }
 class Paddle {
+  public x: any
+  public y: any
+  public w: any
+  public h: any
+  public dir: any
+  public spd: any
+  public color: any
+  public game: any
+  public player: any
+
   constructor(game, x, y, w, h, player) {
     this.x = x
     this.y = y
@@ -229,6 +258,15 @@ class Paddle {
   }
 }
 class Ball {
+  public x: any
+  public y: any
+  public r: any
+  public spd: any
+  public vel: any
+  public color: any
+  public game: any
+  public hitsTaken: any
+
   constructor(game, x, y, r) {
     this.x = x
     this.y = y
@@ -290,7 +328,10 @@ class Ball {
   }
 }
 class Vector {
-  constructor(x, y) {
+  public x: any
+  public y: any
+
+  constructor(x?, y?) {
     this.x = x || 0
     this.y = y || 0
   }
