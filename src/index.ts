@@ -97,17 +97,16 @@ io.on('connection', function(socket) {
 })
 
 function findOpenGame(user, socket) {
-  const g: Game | null = null
+  let g: Game | null = null
   const gms = Object.keys(games)
   for (let i = 0; i < gms.length; i++) {
     const id = gms[i]
     if (games[id].isFull() === false && games[id].status === 'matchmaking') {
-      let g = games[id]
+      g = games[id]
       break
     }
   }
   if (g === null) {
-    let g: any
     g = new Game()
   }
   g.addPlayer(user, socket)
