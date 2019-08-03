@@ -24,9 +24,9 @@ io.on('connection', function(socket) {
     w,
     uonl
   })
-  socket.on('findGame', function(id) {
+  socket.on('findGame', function(id, opponentId) {
     if (id in users) {
-      findOpenGame(users[id], socket)
+      findOpenGame(users[id], socket, opponentId)
     } else {
       socket.emit('err', 'User not created on server.')
     }
@@ -40,7 +40,7 @@ io.on('connection', function(socket) {
         .toString(36)
         .substring(7)
     }
-    const g = new Game()
+    const g = new Game(null)
     g.hosted = true
     g.code = code
     g.addPlayer(users[socket.id], socket)
@@ -96,18 +96,28 @@ io.on('connection', function(socket) {
   })
 })
 
-function findOpenGame(user, socket) {
+function findOpenGame(user, socket, opponentId) {
   let g: Game | null = null
   const gms = Object.keys(games)
   for (let i = 0; i < gms.length; i++) {
     const id = gms[i]
-    if (games[id].isFull() === false && games[id].status === 'matchmaking') {
+    if (
+      games[id].isFull() === false &&
+      games[id].status === 'matchmaking' &&
+      (games[id].forcedOpponentId === null ||
+        games[id].forcedOpponentId === user.id) &&
+      (opponentId === undefined || opponentId === games[id].p1.id)
+    ) {
       g = games[id]
       break
     }
   }
   if (g === null) {
-    g = new Game()
+    if (opponentId === undefined) {
+      g = new Game(null)
+    } else {
+      g = new Game(opponentId)
+    }
   }
   g.addPlayer(user, socket)
 }
@@ -122,9 +132,11 @@ class Game {
   public interval: any
   public secint: any
   public code: any
+  public forcedOpponentId: any
 
-  constructor() {
+  constructor(forcedOpponentId) {
     this.id = uuid()
+    this.forcedOpponentId = forcedOpponentId
     this.p1 = new Paddle(this.id, 30, h / 2, 10, 100, 'p1')
     this.p2 = new Paddle(this.id, w - 30, h / 2, 10, 100, 'p2')
     this.ball = new Ball(this.id, w / 2, h / 2, 6)
