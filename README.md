@@ -4,7 +4,7 @@
 
 Source code for the ZEIW server 🏓
 
-[![](https://travis-ci.com/zeiw/server.svg?branch=master)](https://travis-ci.com/zeiw/server)
+[![](https://travis-ci.com/zeiw/live.svg?branch=master)](https://travis-ci.com/zeiw/live)
 [![](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io)
 
 ## Install
