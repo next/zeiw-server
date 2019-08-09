@@ -2,7 +2,7 @@
 
 [![](https://discordapp.com/api/guilds/541950836994211870/embed.png?style=banner2)](https://discord.gg/h7NxqBe)
 
-Source code for the ZEIW server 🏓
+Source code for the ZEIW websocket 🔌
 
 [![](https://travis-ci.com/zeiw/live.svg?branch=master)](https://travis-ci.com/zeiw/live)
 [![](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io)
