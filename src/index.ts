@@ -3,28 +3,28 @@ import * as http from 'http'
 import * as socketIO from 'socket.io'
 import * as uuid from 'uuid'
 
-let app = express()
+const app = express()
 
-let server = new http.Server(app)
-let port = process.env.PORT || 80
-let io = new socketIO(server)
+const server = new http.Server(app)
+const port = process.env.PORT || 80
+const io = new socketIO(server)
 
-let games = {}
-let hosted = {}
-let users = {}
+const games = {}
+const hosted = {}
+const users = {}
 let w: number
 
 const h = (w = 550)
 
 io.on('connection', function(socket) {
-  let id = socket.id
+  const id = socket.id
   const uonl = Object.keys(users).length
   new User(id)
   socket.emit('load', {
-    id,
     h,
-    w,
-    uonl
+    id,
+    uonl,
+    w
   })
   socket.on('findGame', function(id, opponentId) {
     if (id in users) {
@@ -153,10 +153,10 @@ class Game {
       }
     })
   }
-  isFull() {
+  public isFull() {
     return !!(this.p1.id && this.p2.id)
   }
-  addPlayer(player, socket) {
+  public addPlayer(player, socket) {
     if (!this.p1.id) {
       this.p1.id = player.id
     } else if (!this.p2.id) {
@@ -174,7 +174,7 @@ class Game {
       this.updateClients()
     }
   }
-  updateClients() {
+  public updateClients() {
     if (
       !this.isFull() &&
       (this.status !== 'matchmaking' && this.status !== 'wfo')
@@ -185,10 +185,10 @@ class Game {
     game.interval = ''
     io.to(this.id).emit('gameUpdate', game)
   }
-  clientTrigger(t) {
+  public clientTrigger(t) {
     io.in(this.id).emit('clientTrigger', t)
   }
-  readyUp(player) {
+  public readyUp(player) {
     this[player].ready = true
     if (this.p1.ready && this.p2.ready) {
       this.status = 'playing'
@@ -203,20 +203,20 @@ class Game {
       }, 1000)
     }
   }
-  sendBall(socket) {
+  public sendBall(socket) {
     if (this.status === 'playing' || this.status === 'readying') {
       socket.emit('ball', this.ball)
     }
   }
-  disconnect(socket) {
+  public disconnect(socket) {
     this.leaveGame(socket)
     io.in(this.id).emit('disconnection')
   }
-  end(winner) {
+  public end(winner) {
     clearInterval(this.secint)
     io.in(this.id).emit('end', this[winner].id)
   }
-  leaveGame(socket) {
+  public leaveGame(socket) {
     clearInterval(this.secint)
     socket.leave(this.id)
     if (this.p1.id === socket.id) {
@@ -290,7 +290,7 @@ class Ball {
     this.game = game
     this.hitsTaken = 0
   }
-  update() {
+  public update() {
     this.hitsPaddle(games[this.game].p1)
     this.hitsPaddle(games[this.game].p2)
     if (this.y <= this.r || this.y >= h - this.r) {
@@ -311,7 +311,7 @@ class Ball {
     this.x += this.vel.x
     this.y += this.vel.y
   }
-  hitsPaddle(paddle) {
+  public hitsPaddle(paddle) {
     const px = paddle.x - paddle.w / 2
     const py = paddle.y - paddle.h / 2
     const dx = this.x - Math.max(px, Math.min(this.x, px + paddle.w))
@@ -348,23 +348,23 @@ class Vector {
     this.x = x || 0
     this.y = y || 0
   }
-  set(x, y) {
+  public set(x, y) {
     this.x = x
     this.y = y
     return this
   }
-  mult(f) {
+  public mult(f) {
     ;(this.x *= f), (this.y *= f)
     return this
   }
-  div(f) {
+  public div(f) {
     ;(this.x /= f), (this.y /= f)
     return this
   }
-  mag() {
+  public mag() {
     return Math.sqrt(this.x * this.x + this.y * this.y)
   }
-  setMag(m) {
+  public setMag(m) {
     this.div(this.mag())
     this.mult(m)
     return this
