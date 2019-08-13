@@ -6,8 +6,7 @@
   "author": "ZEIW",
   "main": "src/index.ts",
   "scripts": {
-    "compile": "tsc src/index.ts",
-    "start": "yarn compile && node src/index.js",
+    "start": "tsc && node dist/index.js",
     "test": "echo 👀"
   },
   "husky": {

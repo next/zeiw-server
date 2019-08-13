@@ -1,15 +1,18 @@
-export {}
+import * as express from 'express'
+import * as http from 'http'
+import * as socketIO from 'socket.io'
+import * as uuid from 'uuid'
 
-const uuid = require('uuid')
-const app = require('express')()
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
-const port = process.env.PORT || 80
+let app = express()
 
-let w
+let server = new http.Server(app)
+let port = process.env.PORT || 80
+let io = new socketIO(server)
+
 let games = {}
 let hosted = {}
 let users = {}
+let w: number
 
 const h = (w = 550)
 
@@ -368,6 +371,6 @@ class Vector {
   }
 }
 
-http.listen(port, function() {
-  console.log(`[LIVE] At your service.`)
+server.listen(port, () => {
+  console.log('[INFO] Listening on *:' + port)
 })
