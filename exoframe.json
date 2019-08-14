@@ -1,9 +1,9 @@
 {
   "name": "live",
-  "restart": "on-failure:2",
   "domain": "live.zeiw.me",
-  "project": "ZEIW",
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "project": "ZEIW",
+  "restart": "on-failure:2"
 }
