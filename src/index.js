@@ -4,7 +4,7 @@ import socketIO from 'socket.io'
 import uuid from 'uuid'
 const app = express()
 const server = new Server(app)
-const port = process.env.PORT || 80
+const port = 80
 const io = new socketIO(server)
 const games = {}
 const hosted = {}
@@ -15,11 +15,9 @@ io.on('connection', socket => {
   const id = socket.id
   const uonl = Object.keys(users).length
   new User(id)
-  socket.emit('load', {
-    h,
-    id,
-    uonl,
-    w
+  socket.emit('load', { h, id, uonl, w })
+  socket.on('latency', (startTime, cb) => {
+    cb(startTime)
   })
   socket.on('findGame', (id, opponentId) => {
     if (id in users) {
@@ -95,8 +93,7 @@ io.on('connection', socket => {
 function findOpenGame(user, socket, opponentId) {
   let g = null
   const gms = Object.keys(games)
-  for (let i = 0; i < gms.length; i++) {
-    const id = gms[i]
+  for (const id of gms) {
     if (
       false === games[id].isFull() &&
       'matchmaking' === games[id].status &&
@@ -117,7 +114,7 @@ function findOpenGame(user, socket, opponentId) {
   }
   g.addPlayer(user, socket)
 }
-var Game = /** @class */ (() => {
+var Game = (() => {
   class Game {
     constructor(forcedOpponentId) {
       this.id = uuid()
@@ -136,11 +133,9 @@ var Game = /** @class */ (() => {
         }
       })
     }
-
     isFull() {
       return !!(this.p1.id && this.p2.id)
     }
-
     addPlayer(player, socket) {
       if (!this.p1.id) {
         this.p1.id = player.id
@@ -159,7 +154,6 @@ var Game = /** @class */ (() => {
         this.updateClients()
       }
     }
-
     updateClients() {
       if (
         !this.isFull() &&
@@ -171,11 +165,9 @@ var Game = /** @class */ (() => {
       game.interval = ''
       io.to(this.id).emit('gameUpdate', game)
     }
-
     clientTrigger(t) {
       io.in(this.id).emit('clientTrigger', t)
     }
-
     readyUp(player) {
       this[player].ready = true
       if (this.p1.ready && this.p2.ready) {
@@ -191,23 +183,19 @@ var Game = /** @class */ (() => {
         }, 1000)
       }
     }
-
     sendBall(socket) {
       if ('playing' === this.status || 'readying' === this.status) {
         socket.emit('ball', this.ball)
       }
     }
-
     disconnect(socket) {
       this.leaveGame(socket)
       io.in(this.id).emit('disconnection')
     }
-
     end(winner) {
       clearInterval(this.secint)
       io.in(this.id).emit('end', this[winner].id)
     }
-
     leaveGame(socket) {
       clearInterval(this.secint)
       socket.leave(this.id)
@@ -225,10 +213,9 @@ var Game = /** @class */ (() => {
       }
     }
   }
-
   return Game
 })()
-var User = /** @class */ (() => {
+var User = (() => {
   function User(id) {
     this.id = id
     this.game = null
@@ -238,7 +225,7 @@ var User = /** @class */ (() => {
   }
   return User
 })()
-var Paddle = /** @class */ (() => {
+var Paddle = (() => {
   function Paddle(game, x, y, w, h, player) {
     this.x = x
     this.y = y
@@ -252,7 +239,7 @@ var Paddle = /** @class */ (() => {
   }
   return Paddle
 })()
-var Ball = /** @class */ (() => {
+var Ball = (() => {
   class Ball {
     constructor(game, x, y, r) {
       this.x = x
@@ -264,7 +251,6 @@ var Ball = /** @class */ (() => {
       this.game = game
       this.hitsTaken = 0
     }
-
     update() {
       this.hitsPaddle(games[this.game].p1)
       this.hitsPaddle(games[this.game].p2)
@@ -286,7 +272,6 @@ var Ball = /** @class */ (() => {
       this.x += this.vel.x
       this.y += this.vel.y
     }
-
     hitsPaddle(paddle) {
       const px = paddle.x - paddle.w / 2
       const py = paddle.y - paddle.h / 2
@@ -318,43 +303,36 @@ var Ball = /** @class */ (() => {
       }
     }
   }
-
   return Ball
 })()
-var Vector = /** @class */ (() => {
+var Vector = (() => {
   class Vector {
     constructor(x, y) {
       this.x = x || 0
       this.y = y || 0
     }
-
     set(x, y) {
       this.x = x
       this.y = y
       return this
     }
-
     mult(f) {
       ;(this.x *= f), (this.y *= f)
       return this
     }
-
     div(f) {
       ;(this.x /= f), (this.y /= f)
       return this
     }
-
     mag() {
       return Math.sqrt(this.x * this.x + this.y * this.y)
     }
-
     setMag(m) {
       this.div(this.mag())
       this.mult(m)
       return this
     }
   }
-
   return Vector
 })()
 server.listen(port, () => {
