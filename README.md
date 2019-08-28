@@ -4,7 +4,7 @@
 
 Source code for the ZEIW websocket 🔌
 
-[![](https://travis-ci.com/zeiw/live.svg?branch=master)](https://travis-ci.com/zeiw/live)
+[![](https://travis-ci.com/next/zeiw-server.svg?branch=master)](https://travis-ci.com/next/zeiw-server)
 [![](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io)
 
 ## Install
