@@ -1,4 +1,4 @@
-# ZEIW
+# zeiw-server
 
 [![](https://discordapp.com/api/guilds/541950836994211870/embed.png?style=banner2)](https://discord.gg/h7NxqBe)
 
