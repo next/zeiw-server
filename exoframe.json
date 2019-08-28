@@ -4,6 +4,6 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "project": "ZEIW",
+  "project": "zeiw-server",
   "restart": "on-failure:2"
 }
