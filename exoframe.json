@@ -1,5 +1,5 @@
 {
-  "name": "live",
+  "name": "zeiw-server",
   "domain": "live.zeiw.me",
   "env": {
     "NODE_ENV": "production"

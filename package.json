@@ -1,12 +1,11 @@
 {
-  "name": "live",
+  "name": "zeiw-server",
   "version": "1.0.0",
-  "repository": "git@github.com:ZEIW/live.git",
+  "repository": "git@github.com:next/zeiw-server.git",
   "license": "MIT",
-  "author": "ZEIW",
-  "main": "src/index.js",
+  "author": "Casper <pnfcre@gmail.com>",
+  "main": "index.js",
   "scripts": {
-    "lint": "eslint --fix src/*",
     "start": "node -r esm src/index.js",
     "test": "echo 👀"
   },
@@ -26,8 +25,6 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^6.2.2",
-    "eslint-config-prettier": "^6.1.0",
     "esm": "^3.2.25",
     "husky": "^3.0.4",
     "prettier": "1.18.2",
