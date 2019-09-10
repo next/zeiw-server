@@ -4,7 +4,7 @@ import socketIO from 'socket.io'
 import uuid from 'uuid'
 const app = express()
 const server = new Server(app)
-const port = 80
+const port = 1337
 const io = new socketIO(server)
 const games = {}
 const hosted = {}

@@ -1,13 +1,8 @@
 {
   "name": "zeiw-server",
-  "version": "1.0.0",
-  "repository": "git@github.com:next/zeiw-server.git",
   "license": "MIT",
-  "author": "Casper <pnfcre@gmail.com>",
-  "main": "index.js",
   "scripts": {
-    "start": "node -r esm src/index.js",
-    "test": "echo 👀"
+    "start": "node -r esm src/index.js"
   },
   "husky": {
     "hooks": {
