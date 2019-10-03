@@ -24,8 +24,8 @@ io.on('connection', socket => {
   socket.on('latency', (startTime, cb) => {
     cb(startTime)
   })
-  socket.on('username', name => {
-    io.emit('username', name)
+  socket.on('opponent username', msg => {
+    socket.emit('opponent username', msg)
   })
   socket.on('findGame', (id, opponentId) => {
     if (id in users) {
