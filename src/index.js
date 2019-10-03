@@ -25,7 +25,7 @@ io.on('connection', socket => {
     cb(startTime)
   })
   socket.on('opponent username', msg => {
-    socket.emit('opponent username', msg)
+    socket.broadcast.emit('opponent username', msg)
   })
   socket.on('findGame', (id, opponentId) => {
     if (id in users) {
