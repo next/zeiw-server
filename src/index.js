@@ -147,9 +147,8 @@ var Game = (() => {
       return !!(this.p1.id && this.p2.id)
     }
     addPlayer(player, socket) {
-      socket.on('update ball speed', () => {
-        console.log('Ball speed update event was executed!')
-        this.ball.spd = this.ball.spd + 0.01
+      socket.on('update ball speed', msg => {
+        this.ball.spd = this.ball.spd + msg
       })
       if (!this.p1.id) {
         this.p1.id = player.id
