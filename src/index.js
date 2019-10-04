@@ -186,7 +186,7 @@ var Game = (() => {
         this.updateClients()
         this.clientTrigger('readyuped')
         const game_1 = this
-        socket.on('ballSpeedUpdate', () => {
+        io.on('ballSpeedUpdate', () => {
           io.to(game_1.id).emit('ballSpeedUpdate', game_1.ball.spd + 0.001)
         })
         this.secint = setInterval(() => {
