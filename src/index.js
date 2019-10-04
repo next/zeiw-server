@@ -186,9 +186,9 @@ var Game = (() => {
         this.updateClients()
         this.clientTrigger('readyuped')
         const game_1 = this
-        io.on('update ball speed', speed => {
+        io.on('update ball speed', () => {
           console.log('Ball speed update event was executed!')
-          game_1.ball.spd = game_1.ball.spd + speed
+          game_1.ball.spd = game_1.ball.spd + 0.25
         })
         this.secint = setInterval(() => {
           game_1.secs++
