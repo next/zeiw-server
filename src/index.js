@@ -27,6 +27,10 @@ io.on('connection', socket => {
   socket.on('opponent username', msg => {
     socket.broadcast.emit('opponent username', msg)
   })
+  socket.on('update ball speed', speed => {
+    console.log('Ball speed update event was executed!')
+    game_1.ball.spd = game_1.ball.spd + speed
+  })
   socket.on('findGame', (id, opponentId) => {
     if (id in users) {
       findOpenGame(users[id], socket, opponentId)
@@ -186,9 +190,6 @@ var Game = (() => {
         this.updateClients()
         this.clientTrigger('readyuped')
         const game_1 = this
-        io.on('ballSpeedUpdate', () => {
-          io.to(game_1.id).emit('ballSpeedUpdate', game_1.ball.spd + 0.001)
-        })
         this.secint = setInterval(() => {
           game_1.secs++
           game_1.ball.spd = game_1.ball.spd + 0.001
