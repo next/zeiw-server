@@ -2,13 +2,17 @@ import express from 'express'
 import { Server } from 'http'
 import socketIO from 'socket.io'
 import uuid from 'uuid'
+
+import { Game } from './games/base'
+import { Paddle } from './games/pong/paddle'
+import Vector from './common/vector'
+import User from './common/user'
+import { games, hosted, users } from './common/storage'
+
 const app = express()
 const server = new Server(app)
 const port = 80
 const io = new socketIO(server)
-const games = {}
-const hosted = {}
-const users = {}
 let w
 const h = (w = 550)
 io.on('connection', socket => {
@@ -114,107 +118,7 @@ function findOpenGame(user, socket, opponentId) {
   }
   g.addPlayer(user, socket)
 }
-var Game = (() => {
-  class Game {
-    constructor(forcedOpponentId) {
-      this.id = uuid()
-      this.forcedOpponentId = forcedOpponentId
-      this.p1 = new Paddle(this.id, 30, h / 2, 10, 100, 'p1')
-      this.p2 = new Paddle(this.id, w - 30, h / 2, 10, 100, 'p2')
-      this.ball = new Ball(this.id, w / 2, h / 2, 6)
-      this.status = 'matchmaking'
-      this.hosted = false
-      this.secs = 0
-      games[this.id] = this
-      const self = this
-      this.interval = setInterval(() => {
-        if ('playing' === self.status && self.isFull()) {
-          self.ball.update()
-        }
-      })
-    }
-    isFull() {
-      return !!(this.p1.id && this.p2.id)
-    }
-    addPlayer(player, socket) {
-      if (!this.p1.id) {
-        this.p1.id = player.id
-      } else if (!this.p2.id) {
-        this.p2.id = player.id
-      } else {
-        socket.emit('err', 'Failed to join game. Try again?')
-        return
-      }
-      socket.join(this.id)
-      player.game = this.id
-      this.updateClients()
-      if (this.isFull()) {
-        this.status = 'readying'
-        this.clientTrigger('gameready')
-        this.updateClients()
-      }
-    }
-    updateClients() {
-      if (
-        !this.isFull() &&
-        ('matchmaking' !== this.status && 'wfo' !== this.status)
-      ) {
-        this.status = 'disconnected'
-      }
-      const game = Object.assign({}, this)
-      game.interval = ''
-      io.to(this.id).emit('gameUpdate', game)
-    }
-    clientTrigger(t) {
-      io.in(this.id).emit('clientTrigger', t)
-    }
-    readyUp(player) {
-      this[player].ready = true
-      if (this.p1.ready && this.p2.ready) {
-        this.status = 'playing'
-        this.ball.vel.set(3, 2)
-        this.updateClients()
-        this.clientTrigger('readyuped')
-        const game_1 = this
-        this.secint = setInterval(() => {
-          game_1.secs++
-          game_1.ball.spd = game_1.ball.spd + 0.001
-          io.to(game_1.id).emit('gameTimeUpdate', game_1.secs)
-        }, 1000)
-      }
-    }
-    sendBall(socket) {
-      if ('playing' === this.status || 'readying' === this.status) {
-        socket.emit('ball', this.ball)
-      }
-    }
-    disconnect(socket) {
-      this.leaveGame(socket)
-      io.in(this.id).emit('disconnection')
-    }
-    end(winner) {
-      clearInterval(this.secint)
-      io.in(this.id).emit('end', this[winner].id)
-    }
-    leaveGame(socket) {
-      clearInterval(this.secint)
-      socket.leave(this.id)
-      if (this.p1.id === socket.id) {
-        this.p1.id = false
-      } else if (this.p2.id === socket.id) {
-        this.p2.id = false
-      }
-      this.updateClients()
-      if (!this.p1.id && !this.p2.id) {
-        delete games[this.id]
-        if (this.code && this.code in hosted) {
-          delete hosted[this.code]
-        }
-      }
-    }
-  }
-  return Game
-})()
+
 var User = (() => {
   function User(id) {
     this.id = id
@@ -224,20 +128,6 @@ var User = (() => {
     users[id] = this
   }
   return User
-})()
-var Paddle = (() => {
-  function Paddle(game, x, y, w, h, player) {
-    this.x = x
-    this.y = y
-    this.w = w
-    this.h = h
-    this.dir = 0
-    this.spd = 4
-    this.color = '#ff9900'
-    this.game = game
-    this.player = player
-  }
-  return Paddle
 })()
 var Ball = (() => {
   class Ball {
@@ -304,36 +194,6 @@ var Ball = (() => {
     }
   }
   return Ball
-})()
-var Vector = (() => {
-  class Vector {
-    constructor(x, y) {
-      this.x = x || 0
-      this.y = y || 0
-    }
-    set(x, y) {
-      this.x = x
-      this.y = y
-      return this
-    }
-    mult(f) {
-      ;(this.x *= f), (this.y *= f)
-      return this
-    }
-    div(f) {
-      ;(this.x /= f), (this.y /= f)
-      return this
-    }
-    mag() {
-      return Math.sqrt(this.x * this.x + this.y * this.y)
-    }
-    setMag(m) {
-      this.div(this.mag())
-      this.mult(m)
-      return this
-    }
-  }
-  return Vector
 })()
 server.listen(port, () => {
   console.log(`[INFO] Listening on *:${port}`)
