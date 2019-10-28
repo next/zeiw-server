@@ -1,20 +1,19 @@
 import express from 'express'
 import { Server } from 'http'
 import socketIO from 'socket.io'
-import uuid from 'uuid'
-
-import { Game } from './games/base'
-import { Paddle } from './games/pong/paddle'
-import Vector from './common/vector'
-import User from './common/user'
 import { games, hosted, users } from './common/storage'
+import User from './common/user'
+import Vector from './common/vector'
+import { Game } from './games/base'
 
 const app = express()
 const server = new Server(app)
-const port = 80
+const port = 1337
 const io = new socketIO(server)
 let w
+
 const h = (w = 550)
+
 io.on('connection', socket => {
   const id = socket.id
   const uonl = Object.keys(users).length
@@ -22,6 +21,9 @@ io.on('connection', socket => {
   socket.emit('load', { h, id, uonl, w })
   socket.on('latency', (startTime, cb) => {
     cb(startTime)
+  })
+  socket.on('opponent username', msg => {
+    socket.broadcast.emit('opponent username', msg)
   })
   socket.on('findGame', (id, opponentId) => {
     if (id in users) {
@@ -94,6 +96,7 @@ io.on('connection', socket => {
     socket.emit('uonl', uonl)
   })
 })
+
 function findOpenGame(user, socket, opponentId) {
   let g = null
   const gms = Object.keys(games)
@@ -129,7 +132,7 @@ var User = (() => {
   }
   return User
 })()
-var Ball = (() => {
+const Ball = (() => {
   class Ball {
     constructor(game, x, y, r) {
       this.x = x
@@ -196,5 +199,5 @@ var Ball = (() => {
   return Ball
 })()
 server.listen(port, () => {
-  console.log(`[INFO] Listening on *:${port}`)
+  console.log(`Server ready @ http://localhost:${port}`)
 })

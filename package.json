@@ -1,14 +1,8 @@
 {
-  "name": "live",
-  "version": "1.0.0",
-  "repository": "git@github.com:ZEIW/live.git",
+  "name": "zeiw-server",
   "license": "MIT",
-  "author": "ZEIW",
-  "main": "src/index.js",
   "scripts": {
-    "lint": "eslint --fix src/*",
-    "start": "node -r esm src/index.js",
-    "test": "echo 👀"
+    "start": "node -r esm src/index.js"
   },
   "husky": {
     "hooks": {
@@ -22,15 +16,13 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.3.0",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^6.2.1",
-    "eslint-config-prettier": "^6.1.0",
     "esm": "^3.2.25",
-    "husky": "^3.0.4",
+    "husky": "^3.0.9",
     "prettier": "1.18.2",
-    "pretty-quick": "^1.11.1"
+    "pretty-quick": "^2.0.0"
   }
 }

@@ -1,10 +1,10 @@
-# ZEIW
+# zeiw-server
 
 [![](https://discordapp.com/api/guilds/541950836994211870/embed.png?style=banner2)](https://discord.gg/h7NxqBe)
 
 Source code for the ZEIW websocket 🔌
 
-[![](https://travis-ci.com/zeiw/live.svg?branch=master)](https://travis-ci.com/zeiw/live)
+[![](https://travis-ci.com/next/zeiw-server.svg?branch=master)](https://travis-ci.com/next/zeiw-server)
 [![](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io)
 
 ## Install
@@ -25,8 +25,8 @@ We welcome security research on ZEIW under the terms of our [vulnerability discl
 
 ## Contributing
 
-Contributions, issues and feature requests are welcome! Feel free to check out the [issues page](https://github.com/ZEIW/ZEIW/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check out the [issues-only repository](https://github.com/next/zeiw-issues/issues).
 
 ## License
 
-This project is [MIT](./LICENSE) licensed.
+[MIT License](./LICENSE).
