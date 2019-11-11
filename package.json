@@ -22,7 +22,7 @@
   "devDependencies": {
     "esm": "^3.2.25",
     "husky": "^3.0.9",
-    "prettier": "1.18.2",
+    "prettier": "1.19.1",
     "pretty-quick": "^2.0.1"
   }
 }
