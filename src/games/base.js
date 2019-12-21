@@ -1,6 +1,7 @@
+import { games, hosted, users } from './../storage'
+
 import Vector from './../common/vector'
 import uuid from 'uuid'
-import { games, hosted, users } from './../storage'
 
 // LEGACY: Game object for pong
 export const Game = (() => {
@@ -44,10 +45,7 @@ export const Game = (() => {
       }
     }
     updateClients() {
-      if (
-        !this.isFull() &&
-        ('matchmaking' !== this.status && 'wfo' !== this.status)
-      ) {
+      if (!this.isFull() && 'matchmaking' !== this.status && 'wfo' !== this.status) {
         this.status = 'disconnected'
       }
       const game = Object.assign({}, this)

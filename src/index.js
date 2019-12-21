@@ -104,8 +104,7 @@ function findOpenGame(user, socket, opponentId) {
     if (
       false === games[id].isFull() &&
       'matchmaking' === games[id].status &&
-      (null === games[id].forcedOpponentId ||
-        games[id].forcedOpponentId === user.id) &&
+      (null === games[id].forcedOpponentId || games[id].forcedOpponentId === user.id) &&
       (opponentId === undefined || opponentId === games[id].p1.id)
     ) {
       g = games[id]
@@ -183,10 +182,7 @@ const Ball = (() => {
         } else if (0 > paddle.dir) {
           this.vel.y -= this.spd / 2
         }
-        this.x =
-          'p1' === paddle.player
-            ? paddle.x + paddle.w / 2 + this.r
-            : px - this.r
+        this.x = 'p1' === paddle.player ? paddle.x + paddle.w / 2 + this.r : px - this.r
         this.hitsTaken++
         if (this.hitsTaken % 5) {
           this.spd *= 1.05
