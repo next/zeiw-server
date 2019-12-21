@@ -1,5 +1,5 @@
-import express from 'express'
 import { Server } from 'http'
+import express from 'express'
 import socketIO from 'socket.io'
 import uuid from 'uuid'
 
@@ -106,8 +106,7 @@ function findOpenGame(user, socket, opponentId) {
     if (
       false === games[id].isFull() &&
       'matchmaking' === games[id].status &&
-      (null === games[id].forcedOpponentId ||
-        games[id].forcedOpponentId === user.id) &&
+      (null === games[id].forcedOpponentId || games[id].forcedOpponentId === user.id) &&
       (opponentId === undefined || opponentId === games[id].p1.id)
     ) {
       g = games[id]
@@ -168,10 +167,7 @@ var Game = (() => {
       }
     }
     updateClients() {
-      if (
-        !this.isFull() &&
-        ('matchmaking' !== this.status && 'wfo' !== this.status)
-      ) {
+      if (!this.isFull() && 'matchmaking' !== this.status && 'wfo' !== this.status) {
         this.status = 'disconnected'
       }
       const game = Object.assign({}, this)
@@ -306,10 +302,7 @@ var Ball = (() => {
         } else if (0 > paddle.dir) {
           this.vel.y -= this.spd / 2
         }
-        this.x =
-          'p1' === paddle.player
-            ? paddle.x + paddle.w / 2 + this.r
-            : px - this.r
+        this.x = 'p1' === paddle.player ? paddle.x + paddle.w / 2 + this.r : px - this.r
         this.hitsTaken++
         if (this.hitsTaken % 5) {
           this.spd *= 1.05
