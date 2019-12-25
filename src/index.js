@@ -75,7 +75,6 @@ io.on('connection', socket => {
 
   socket.on('paddle', ({ player, y, dir, game }) => {
     if (!games[users[socket.id].game]) return
-
     const paddle = games[users[socket.id].game][player]
 
     paddle.y = y
@@ -86,19 +85,16 @@ io.on('connection', socket => {
 
   socket.on('readyup', ({ p }) => {
     if (!games[users[socket.id].game]) return
-
     games[users[socket.id].game].readyUp(p)
   })
 
   socket.on('ball', () => {
     if (!games[users[socket.id].game]) return
-
     games[users[socket.id].game].sendBall(socket)
   })
 
   socket.on('leaveGame', () => {
     if (!games[users[socket.id].game]) return
-
     games[users[socket.id].game].leaveGame(socket)
   })
 
@@ -112,7 +108,6 @@ io.on('connection', socket => {
 
   socket.on('getOnline', () => {
     const uonl = Object.keys(users).length
-
     socket.emit('uonl', uonl)
   })
 })
@@ -172,17 +167,12 @@ var Game = (() => {
     }
 
     addPlayer(player, socket) {
-      socket.on('update ball speed', msg => {
-        this.ball.spd = this.ball.spd + msg
-      })
-
       if (!this.p1.id) {
         this.p1.id = player.id
       } else if (!this.p2.id) {
         this.p2.id = player.id
       } else {
         socket.emit('err', 'Failed to join game. Try again?')
-
         return
       }
 
@@ -388,21 +378,18 @@ var Vector = (() => {
     set(x, y) {
       this.x = x
       this.y = y
-
       return this
     }
 
     mult(f) {
       // eslint-disable-next-line no-extra-semi
       ;(this.x *= f), (this.y *= f)
-
       return this
     }
 
     div(f) {
       // eslint-disable-next-line no-extra-semi
       ;(this.x /= f), (this.y /= f)
-
       return this
     }
 
@@ -413,7 +400,6 @@ var Vector = (() => {
     setMag(m) {
       this.div(this.mag())
       this.mult(m)
-
       return this
     }
   }
