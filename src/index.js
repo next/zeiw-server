@@ -16,6 +16,8 @@ let w
 
 const h = (w = 550)
 
+io.set('transports', ['websocket'])
+
 io.on('connection', socket => {
   const id = socket.id
   const uonl = Object.keys(users).length
