@@ -1,20 +1,17 @@
 import { Server } from 'http'
-import express from 'express'
 import socketIO from 'socket.io'
 import uuid from 'uuid'
 
-const app = express()
-const server = new Server(app)
-const port = 1337
+const server = new Server()
 const io = new socketIO(server)
+const port = process.env.PORT || 3000
+
+const h = 550
+const w = 550
 
 const games = {}
-const hosted = {}
 const users = {}
-
-let w
-
-const h = (w = 550)
+const hosted = {}
 
 io.set('transports', ['websocket'])
 
@@ -410,5 +407,5 @@ var Vector = (() => {
 })()
 
 server.listen(port, () => {
-  console.log(`Server ready @ http://localhost:${port}`)
+  console.log(`Server ready @ localhost:${port}`)
 })
