@@ -4,7 +4,7 @@ import uuid from 'uuid'
 
 const server = new Server()
 const io = new socketIO(server)
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 9000
 
 const h = 550
 const w = 550
@@ -381,13 +381,11 @@ var Vector = (() => {
     }
 
     mult(f) {
-      // eslint-disable-next-line no-extra-semi
       ;(this.x *= f), (this.y *= f)
       return this
     }
 
     div(f) {
-      // eslint-disable-next-line no-extra-semi
       ;(this.x /= f), (this.y /= f)
       return this
     }
@@ -407,5 +405,5 @@ var Vector = (() => {
 })()
 
 server.listen(port, () => {
-  console.log(`Server ready @ localhost:${port}`)
+  console.log(`🚀 Server ready at http://localhost:${port}/`)
 })

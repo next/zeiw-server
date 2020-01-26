@@ -1,3 +1,5 @@
-*.log
 dist
+*.log
+yarn.lock
 node_modules
+package-lock.json
