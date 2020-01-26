@@ -2,7 +2,8 @@
   "name": "zeiw-server",
   "license": "MIT",
   "scripts": {
-    "start": "node -r esm src/index.js"
+    "start": "node -r esm src/index.js",
+    "test": "echo 👀"
   },
   "dependencies": {
     "socket.io": "^2.3.0",
