@@ -1,6 +1,6 @@
 import { Server } from 'http'
 import socketIO from 'socket.io'
-import uuid from 'uuid'
+import { v4 as uuid } from 'uuid'
 
 const server = new Server()
 const io = new socketIO(server)
