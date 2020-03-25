@@ -15,7 +15,7 @@ const hosted = {}
 
 io.set('transports', ['websocket'])
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   const id = socket.id
   const uonl = Object.keys(users).length
 
@@ -27,7 +27,7 @@ io.on('connection', socket => {
     cb(startTime)
   })
 
-  socket.on('opponent username', msg => {
+  socket.on('opponent username', (msg) => {
     socket.broadcast.emit('opponent username', msg)
   })
 
@@ -40,14 +40,10 @@ io.on('connection', socket => {
   })
 
   socket.on('host', () => {
-    let code = Math.random()
-      .toString(36)
-      .substring(7)
+    let code = Math.random().toString(36).substring(7)
 
     while (7 !== code.length) {
-      code = Math.random()
-        .toString(36)
-        .substring(7)
+      code = Math.random().toString(36).substring(7)
     }
 
     const g = new Game(null)
@@ -62,7 +58,7 @@ io.on('connection', socket => {
     g.status = 'wfo'
   })
 
-  socket.on('join', code => {
+  socket.on('join', (code) => {
     if (hosted[code]) {
       hosted[code].addPlayer(users[socket.id], socket)
 
