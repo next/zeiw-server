@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "socket.io": "^2.3.0",
-    "uuid": "^7.0.0"
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "esm": "^3.2.25",
