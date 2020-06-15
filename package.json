@@ -16,7 +16,7 @@
 		"@types/uuid": "8.0.0",
 		"prettier": "2.0.5",
 		"ts-node": "8.10.2",
-		"ts-node-dev": "1.0.0-pre.44",
+		"ts-node-dev": "1.0.0-pre.48",
 		"typescript": "3.9.5"
 	},
 	"prettier": {
