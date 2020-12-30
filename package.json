@@ -7,7 +7,7 @@
 		"start": "ts-node ."
 	},
 	"dependencies": {
-		"socket.io": "2.3.0",
+		"socket.io": "3.0.4",
 		"uuid": "8.3.0"
 	},
 	"devDependencies": {
